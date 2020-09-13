@@ -3,14 +3,20 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-progress',
   templateUrl: './progress.component.html',
-  styles: [
-  ]
+  styleUrls: ['./progress.component.css']
 })
-export class ProgressComponent implements OnInit {
+export class ProgressComponent {
 
-  constructor() { }
+  progreso1: number = 25;
+  progreso2: number = 35;
 
-  ngOnInit(): void {
+  // Getter para pasar el valor del porcentaje de la barra
+  get getProgreso1(): string {
+    return `${this.progreso1}%`;
+  }
+
+  get getProgreso2(): string {
+    return `${this.progreso2}%`;
   }
 
 }

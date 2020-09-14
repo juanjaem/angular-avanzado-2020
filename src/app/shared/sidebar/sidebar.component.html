@@ -33,7 +33,12 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li *ngFor="let subMenuItem of item.submenu">
-                            <a [routerLink]="subMenuItem.url">{{ subMenuItem.titulo }}</a>
+                            <a [routerLink]="subMenuItem.url"
+                                routerLinkActive="active"
+                                [routerLinkActiveOptions]="{exact: true}">
+                                <!-- Ponemos el 'routerLinkActiveOptions' para quitar el problema de coincidencia de path que hace que se marque 'active' el 'main' siempre -->
+                                {{ subMenuItem.titulo }}
+                            </a>
                         </li>
                     </ul>
                 </li>

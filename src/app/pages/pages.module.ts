@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Necesario para poder presentar el <router-outlet> de "pages.compmponents.html"
-import { FormsModule } from '@angular/forms'; // Necesario para usar el ngModel en los inputs
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Necesario para usar el ngModel en los inputs
 
 
 import { SharedModule } from '../shared/shared.module';
@@ -14,6 +14,7 @@ import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 
@@ -25,7 +26,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     PagesComponent,
     AccountSettingsComponent,
     PromesasComponent,
-    RxjsComponent
+    RxjsComponent,
+    PerfilComponent
   ],
   exports: [
     DashboardComponent,
@@ -34,7 +36,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     PagesComponent,
     AccountSettingsComponent,
     PromesasComponent,
-    RxjsComponent
+    RxjsComponent,
+    PerfilComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +45,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     SharedModule,
     RouterModule,
     ComponentsModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule { }

@@ -7,12 +7,13 @@ import { environment } from '../../environments/environment';
 
 import { RegisterForm } from '../interface/register-form.interface';
 import { LoginForm } from '../interface/login-form.interface';
+import { CargarUsuario } from '../interface/cargar-usuarios.interface';
+
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
 
 const base_url = environment.base_url;
 declare const gapi: any; // Lo definimos para usarlo, porque viene del archivo de JS de google que pusimos en el index
-
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,15 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
+  // Getter para obtener los headers con el x-token como parámetro
+  get headers(): object {
+    return {
+      headers: {
+        'x-token': this.token
+      }
+    };
+  }
+
 
   logout(): void {
     localStorage.removeItem('token');
@@ -61,11 +71,7 @@ export class UsuarioService {
     // La petición /login/renew comprueba el token actual:
     //  - Si es válido, devuelve un nuevo token en un status 200
     //  - Si no lo es, devuelve un status 401
-    return this.http.get(`${base_url}/login/renew`, {
-      headers: {
-        'x-token': this.token
-      }
-    }).pipe(
+    return this.http.get(`${base_url}/login/renew`, this.headers).pipe(
       map( (resp: any) => {
         localStorage.setItem('token', resp.token);
         const { nombre, email, img, google, role, uid } = resp.usuario;
@@ -131,16 +137,40 @@ export class UsuarioService {
       ...data,
       role: this.usuario.role
     };
-
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-        'x-token': this.token
-      }
-    });
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, this.headers);
   }
 
 
+  cargarUsuarios(desde: number = 0, ): Observable<CargarUsuario> {
+    const url = `${base_url}/usuarios?desde=${desde}`;
 
+    return this.http.get<CargarUsuario>(url, this.headers).pipe(
+      // Podríamos haber hecho la transformación de la imagen con un pipe desde el HTML, pero lo haremos desde aquí
+      // como alternativa educativa. Lo que se hará es transformar el array para que sean de la clase Usuario, y disponga
+      // del getter 'imagenUrl', y poder usarlo directamente en el HTML
+      map( resp => {
+        const usuarios: Usuario[] =  resp.usuarios.map( user => {
+                            return new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid);
+                          });
+
+        return {
+          total: resp.total,
+          usuarios
+        };
+      })
+    );
+  }
+
+
+  eliminarUsuario(usuario: Usuario): Observable<any> {
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+    return this.http.delete(url, this.headers);
+  }
+
+
+ guardarUsuario( usuario: Usuario ): Observable<any> {
+    return this.http.put(`${base_url}/usuarios/${usuario.uid}`, usuario, this.headers);
+  }
 
 
 }

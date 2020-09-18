@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../services/settings.service';
+import { ModalImagenComponent } from '../components/modal-imagen/modal-imagen.component';
 
 // Declaramos esta función global para que no salten errores de Typescript
 declare function customInitFunctions(): void;

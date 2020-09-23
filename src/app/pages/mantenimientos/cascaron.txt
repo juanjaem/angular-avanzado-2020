@@ -1,24 +1,13 @@
-<div class="row">
+<div class="row animated fadeIn fast">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
 
-                <h4 class="card-title">Striped Progress bar</h4>
-                <div class="progress m-t-20">
-                    <div class="progress-bar bg-primary progress-bar-striped active" 
-                        style="height:10px;"
-                        [style.width]="getProgreso1"
-                        role="progressbar">
-                    </div>
-                </div>
-
-                <div class="progress m-t-20">
-                    <div class="progress-bar bg-info progress-bar-striped active" 
-                        style="height:10px;"
-                        [style.width]="getProgreso2"
-                        role="progressbar">
-                    </div>
-                </div>
+                <input  type="text"
+                        class="form-control"
+                        placeholder="Buscar hospital..."
+                        [(ngModel)]="busqueda"
+                        (keyup)="buscar()">
 
             </div>
         </div>
@@ -26,28 +15,65 @@
 </div>
 
 
-<div class="row">
+<div class="row animated fadeIn fast">
+    <div class="col-12">
 
-    <div class="col-6">
+        <div class="alert alert-info text-center">
+            <h4 class="alert-heading">Cargando</h4>
+            <p class="fa fa-spin fa-refresh fa-2x"></p>
+            <p class="mb-0"></p>
+            <p>Por favor espere...</p>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row animated fadeIn fast">
+    <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <app-incrementador (valorSalida)="progreso1 = $event"
-                                    [valor]="progreso1"
-                                    [btnClass]="'btn-primary'">
-                </app-incrementador>
+                <h4 class="card-title">Total de hospitales</h4>
+                <h6 class="card-subtitle">Hospitales registrados en la aplicación</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="w100">Foto</th>
+                                <th>Nombre</th>
+                                <th>Nombre</th>
+                                <th class="w140">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>lorem</td>
+                                <td>lorem</td>
+                                <td>lorem</td>
+
+                                <td class="text-nowrap text-center text-center">
+                                    <a  data-toggle="tooltip"
+                                        data-original-title="Borrar"
+                                        class="cursor">
+                                        <i class="fa fa-close text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+
+                    <div>
+                        <button  class="btn btn-secondary">Anteriores</button>
+                        &nbsp;
+                        <button  class="btn btn-secondary">Siguientes</button>
+                        &nbsp;
+                        <span>Página</span>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="col-6">
-        <div class="card">
-            <div class="card-body">
-                <app-incrementador (valorSalida)="progreso2 = $event"
-                                    [valor]="progreso2"
-                                    [btnClass]="'btn-info'">
-                </app-incrementador>
-            </div>
-        </div>
-    </div>
-
 </div>

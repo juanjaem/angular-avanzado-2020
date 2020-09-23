@@ -4,6 +4,8 @@ import { environment } from '../../environments/environment.prod';
 import { map } from 'rxjs/operators';
 import { Usuario } from '../models/usuario.model';
 import { Observable } from 'rxjs';
+import { Hospital } from '../models/hospital.model';
+import { Medico } from '../models/medico.model';
 
 const base_url = environment.base_url;
 
@@ -13,8 +15,7 @@ const base_url = environment.base_url;
 export class BusquedasService {
 
   constructor(
-  private http: HttpClient,
-
+    private http: HttpClient,
   ) { }
 
 
@@ -41,24 +42,40 @@ export class BusquedasService {
   }
 
 
-  buscar(tipo: 'usuarios' | 'medicos' | 'hospitales', termino: string): Observable<Usuario[]> {
+  private transformarHospitales(resultados: any[]): Hospital[] {
+    return resultados;
+  }
+
+
+  private transformarMedicos(resultados: any[]): Medico[] {
+    return resultados;
+  }
+
+
+  buscar(tipo: 'usuarios' | 'medicos' | 'hospitales', termino: string): Observable<Usuario[] | Hospital[]> {
     const url = `${base_url}/todo/coleccion/${tipo}/${termino}`;
 
-    return this.http.get<Usuario[]>(url, this.headers).pipe(
+    return this.http.get(url, this.headers).pipe(
       map( (resp: any) => {
         switch (tipo) {
           case 'usuarios':
             return this.transformarUsuarios(resp.resultado);
             break;
 
+            case 'hospitales':
+              return this.transformarHospitales(resp.resultado);
+              break;
+
+            case 'medicos':
+              return this.transformarMedicos(resp.resultado);
+              break;
+
           default:
             return [];
         }
       } )
     );
-
   }
-
 
 
 

@@ -74,6 +74,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
 
+  // Buscar usuarios
   buscar(): void {
     if (!this.busqueda || this.busqueda === '') {
       this.cargarUsuarios();
@@ -81,8 +82,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
 
     this.busquedasService.buscar('usuarios', this.busqueda)
-      .subscribe( resultados => {
-        this.usuarios = resultados;
+      .subscribe( (resp: Usuario[]) => {
+        this.usuarios = resp;
       } );
   }
 
@@ -130,7 +131,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
 
   abrirModal(usuario: Usuario): void {
-    this.modalImagenService.abrirModal('usuarios', usuario.uid, usuario.imagenUrl);
+    this.modalImagenService.abrirModal('usuarios', usuario.uid, usuario.img);
   }
 
 

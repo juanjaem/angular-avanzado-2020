@@ -78,6 +78,19 @@ export class BusquedasService {
   }
 
 
+  busquedaGlobal(termino: string): Observable<{usuarios: Usuario[], medicos: Medico[], hospitales: Hospital[]}> {
+    const url = `${base_url}/todo/${termino}`;
+
+    return this.http.get<any>(url, this.headers).pipe(
+      map(data => {
+        const dataMaped = {...data};
+        delete dataMaped.ok;
+        return dataMaped;
+      })
+    );
+  }
+
+
 
 
 }

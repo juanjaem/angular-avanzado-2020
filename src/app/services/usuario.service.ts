@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -11,6 +11,7 @@ import { CargarUsuario } from '../interface/cargar-usuarios.interface';
 
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
+import Swal from 'sweetalert2';
 
 const base_url = environment.base_url;
 declare const gapi: any; // Lo definimos para usarlo, porque viene del archivo de JS de google que pusimos en el index
@@ -43,6 +44,12 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
+
+  get role(): 'ADMIN_ROLE' | 'USER_ROLE' {
+    return this.usuario.role;
+  }
+
+
   // Getter para obtener los headers con el x-token como parámetro
   get headers(): object {
     return {
@@ -53,8 +60,15 @@ export class UsuarioService {
   }
 
 
+  guardarLocalStorage(token: string, menu: any): void {
+    localStorage.setItem('token', token);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
+
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
 
     this.auth2.signOut().then(() =>  {
       // Como hacemos la navegación desde librerias de terceros, hay que ejecutar el ngzone.run para que la vista se
@@ -73,7 +87,7 @@ export class UsuarioService {
     //  - Si no lo es, devuelve un status 401
     return this.http.get(`${base_url}/login/renew`, this.headers).pipe(
       map( (resp: any) => {
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu);
         const { nombre, email, img, google, role, uid } = resp.usuario;
         this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
         return true; // Si tenemos una respuesta es xk se ha validado el token correctamente, y sustituimos el {token: ''} por un true
@@ -89,8 +103,8 @@ export class UsuarioService {
     return this.http.post(`${base_url}/usuarios`, formData)
       .pipe(
         tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
-        })
+          this.guardarLocalStorage(resp.token, resp.menu);
+        }),
       );
   }
 
@@ -99,7 +113,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login`, formData)
       .pipe(
         tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
+          this.guardarLocalStorage(resp.token, resp.menu);
         })
       );
   }
@@ -126,7 +140,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login/google`, { token })
       .pipe(
         tap((resp: any) => {
-          localStorage.setItem('token', resp.token);
+          this.guardarLocalStorage(resp.token, resp.menu);
         })
       );
   }
@@ -168,7 +182,7 @@ export class UsuarioService {
   }
 
 
- guardarUsuario( usuario: Usuario ): Observable<any> {
+  guardarUsuario( usuario: Usuario ): Observable<any> {
     return this.http.put(`${base_url}/usuarios/${usuario.uid}`, usuario, this.headers);
   }
 

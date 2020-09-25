@@ -22,8 +22,8 @@ import { RegisterComponent } from './register/register.component';
     HttpClientModule
   ],
   exports: [
-    LoginComponent,
-    RegisterComponent
+    // LoginComponent,
+    // RegisterComponent
   ]
 })
 export class AuthModule { }

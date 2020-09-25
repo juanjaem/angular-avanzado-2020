@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Necesario para poder presentar el <router-outlet> de "pages.compmponents.html"
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Necesario para usar el ngModel en los inputs
 
-
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
@@ -41,19 +40,19 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
     BusquedaComponent,
   ],
   exports: [
-    DashboardComponent,
-    Grafica1Component,
-    ProgressComponent,
-    PagesComponent,
-    AccountSettingsComponent,
-    PromesasComponent,
-    RxjsComponent,
-    PerfilComponent,
-    UsuariosComponent,
-    HospitalesComponent,
-    MedicosComponent,
-    MedicoComponent,
-    BusquedaComponent,
+    // DashboardComponent,
+    // Grafica1Component,
+    // ProgressComponent,
+    // PagesComponent,
+    // AccountSettingsComponent,
+    // PromesasComponent,
+    // RxjsComponent,
+    // PerfilComponent,
+    // UsuariosComponent,
+    // HospitalesComponent,
+    // MedicosComponent,
+    // MedicoComponent,
+    // BusquedaComponent,
   ],
   imports: [
     CommonModule,
